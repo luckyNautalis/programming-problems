@@ -11,9 +11,7 @@
 
 class Solution {
     public int[] getConcatenation(int[] nums) {
-        int ans[] = new int[2 * nums.length];
-        int start = 0;
-        int mid = nums.length;
+        int ans[] = new int[2 * nums.length], start = 0, mid = nums.length;
         do {ans[start] = nums[start]; ans[mid] = nums[start]; start++; mid++;}
         while (start < nums.length);
 
