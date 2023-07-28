@@ -11,6 +11,7 @@
 import java.util.Arrays;
 import java.util.ArrayList;
 
+// Iterating & Using Binary Search.
 class Solution {
     /**
      * This function finds the longest increasing subsequnce given an array
@@ -19,21 +20,23 @@ class Solution {
      * @return temp.size() The size of the longest increasing subsequence
      */
     public int lengthOfLIS(int[] nums) {
-        // We only want the first element of 'nums' in a ArrayList used to
-        // represent the length of the longest increasing subsequence.
-        // This will not always be the actual subsequence but close since its
-        // elements may be replaced.
+        // We can just initialize the ArrayList 'temp' with the first element
+        // of 'nums' it will be the starting point. The length starts at 1
+        // and from here we can test if we increase.
         ArrayList<Integer> temp = new ArrayList<>(Arrays.asList(nums[0]));
         for (int i = 1; i < nums.length; i++) {
-            // If the ith element is greater than the (i-1)th element of nums
-            // then we know we have an increase and we want to add this to our
-            // LIS representation, 'temp'.
-            if (nums[i] > temp.get(temp.size() - 1)) temp.add(nums[i]);
-            // If the ith element is less than or equal to the (i-1)th element
-            // of nums then we know we have either a decrease or the same number
-            // as before. So, we want to replace the the first
-            // number in 'temp' that is >= 'nums[i]' with 'nums[i]'.
+            if (nums[i] > temp.get(temp.size() - 1))
+                // If the next element after the latest within 'temp' is greater
+                // then we want to add that to 'temp', to get a longer subsequence.
+                temp.add(nums[i]);
             else {
+                // If the next element of 'nums' is less than or equal to the last
+                // element of 'temp' then were presented with either a smaller
+                // number or the same number as before. In this case, we want to
+                // replace the smallest number that is greater or equal to 'nums[i]'
+                // with 'nums[i]' the smaller number. In, effect we are leaving
+                // the length of 'temp' unchanged so we may continue searching for
+                // actual increments.
                 int replaceIndex = lowerBound(temp, nums[i]);
                 temp.set(replaceIndex, nums[i]);
             }
@@ -44,7 +47,7 @@ class Solution {
 
     /**
      * Given some number this function will determine the lower bound, that is,
-     * the smallest index of a sorted ArrayList such that it is greater or
+     * the smallest index of a sorted ArrayList where it is greater or
      * equal to the number provided.
      * @param numList A sorted ArrayList to search through for the lower bound
      * @param target The lower bound is found with respect to the target number
@@ -54,18 +57,18 @@ class Solution {
         int low = 0, mid, high = numList.size() - 1;
         while (low < high) {
             mid = (low + high) / 2;
-            // if the element at 'mid' is >= to the target then
-            // we want to search to the left of 'mid'.
-            if (numList.get(mid) >= target) {
-                high = mid - 1;
-            }
-            // If the element at 'mid' is < than the 'target' then
-            // we want to search to the right of 'mid'.
-            else low = mid + 1;
+            if (numList.get(mid) >= target)
+                high = mid - 1; // Search to the left of 'mid', index.
+            else low = mid + 1; // Search to the right of 'mid', index.
         }
-        // If the 'target' is greater than the last element of the
-        // list then lower bound is not in the list.
-        if (low < numList.size() && numList.get(low) < target) low++;
+        if (low < numList.size() && numList.get(low) < target)
+            // If the current lower bound, 'low' is less than the size of the
+            // list 'numsList' then we know the lower bound is not already the
+            // last index/element of the 'numList'.
+            // While, If the 'target' is greater than the last element of the
+            // list then lower bound is not in the list and we must increment to
+            // make the lower bound the last index/element of 'numList'.
+            low++;
 
         return low;
     }
