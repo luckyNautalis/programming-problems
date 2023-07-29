@@ -1,5 +1,5 @@
 class LowerBound {
-    /*
+    /**
      * Given some number this function will determine the lower bound, that is,
      * the smallest index of a sorted int array where it is greater or equal
      * to the number provided.
