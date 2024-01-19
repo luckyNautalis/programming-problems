@@ -8,12 +8,16 @@ Constraints:
 
 """
 
+from typing import List
+
 class Solution:
 
-    def containsDuplicate(self, nums: list[int]) -> bool:
+    def containsDuplicate(self, nums: List[int]) -> bool:
 
         has_duplicate : bool = False
         nums_set : set = set(nums)
-        if (len(nums) > len(nums_set)): has_duplicate = True
+
+        if len(nums) > len(nums_set):
+            has_duplicate = True
 
         return has_duplicate
