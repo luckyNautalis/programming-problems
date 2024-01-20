@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Problem 2880: Select Dataimport pandas as pd
+# Problem 2880: Select Data
 import pandas as pd
 
 def selectData(students: pd.DataFrame) -> pd.DataFrame:
