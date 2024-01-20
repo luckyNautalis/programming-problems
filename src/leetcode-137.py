@@ -20,8 +20,5 @@ class Solution:
                 complement = nums[:]; del complement[i]
                 if nums[i] not in complement:
                     return nums[i]
-        else:
-            return nums[0]
 
-nums = [0,1,0,1,0,1,99]; s = Solution()
-print(s.singleNumber(nums))
+        return nums[0]
