@@ -2,7 +2,7 @@
 
 
 /**
- * Constraints:
+* Constraints:
  *
  * 1) 2 <= s.length <= 1000
  * 2) s.length is even.
