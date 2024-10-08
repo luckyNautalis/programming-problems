@@ -11,8 +11,6 @@
  * - 0 <= Node.val <= 100
  * - 1 <= n <= sz
  */
-import java.util.ArrayList;
-
 class Solution {
 
     public class ListNode {
@@ -33,21 +31,26 @@ class Solution {
     }
 
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ArrayList<ListNode> nodeList = new ArrayList<>();
-        ListNode current = head;
+        /*
+         * A space-efficient approach where we only keep track
+         * of a two nodes, n units apart.
+         */
+        ListNode prev = head;
+        ListNode last = head;
 
-        while (current != null) {
-            nodeList.add(current);
-            current = current.next;
+        // Distance apart should be n+1 to skip nth node from end.
+        int delta = 0;
+        while (last != null) {
+            last = last.next;
+            delta++;
+            if (delta > n + 1)
+                prev = prev.next;
         }
 
-        int size = nodeList.size();
-        if (size == n)
+        if (delta == n)
             return head.next;
 
-        ListNode prev = nodeList.get(size - n - 1);
         prev.next = prev.next.next;
-
         return head;
     }
 }
