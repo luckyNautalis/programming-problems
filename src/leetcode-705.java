@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 class MyHashSet<T> {
 
-    private HashMap<T,Integer> map;
+    private HashMap<T, Integer> map;
 
     public MyHashSet() {
         map = new HashMap<>();

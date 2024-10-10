@@ -37,7 +37,6 @@ class Solution {
          */
         ListNode prev = head;
         ListNode last = head;
-
         // Distance apart should be n+1 to skip nth node from end.
         int delta = 0;
         while (last != null) {
@@ -46,10 +45,8 @@ class Solution {
             if (delta > n + 1)
                 prev = prev.next;
         }
-
         if (delta == n)
             return head.next;
-
         prev.next = prev.next.next;
         return head;
     }
