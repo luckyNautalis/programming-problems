@@ -1,57 +1,72 @@
-# 1493. Longest Subarray of 1's After Deleting One Element
+"""1493. Longest Subarray of 1's After Deleting One Element
 
+Given a binary array nums, you should delete one element from it.
 
-"""
-Constraints:
+Return the size of the longest non-empty subarray containing only 1's in the resulting array.
+Return 0 if there is no such subarray.
+
+Constraints
+-----------
 
 1) 1 <= nums.length <= 10^5
 2) nums[i] is either 0 or 1
-
 """
 
-# TODO: Finish this problem.
+
 class Solution:
-    def longestSubarray(self, bit_array: list[int]) -> int:
-        # This procedure takes an iterative approach. The idea of each iteration is
-        # to complete the following steps:
-        #
-        #  1. The `right_index` points to the current 0 and the `left_index`
-        #     points to the last left-ward 0 from the `right_index`.
-        #  2. Calculate the lower partition and set `left_index` to
-        #     `right_index`.
-        #  3. Move `right_index` to the next right-ward 0.
-        #  4. Calculate the upper partition.
-        #  5. Take the sum of the lower and upper partitions and see if it's
-        #     bigger than the largest result found so far.
 
-        # (1) Initialize variables.
-        result: int = 0                       # Tracks the largest subarray found over each iteration.
-        left_index: int = -1                  # The index of the lower 0 at the current iteration.
-        right_index: int = -1                 # The index of the upper 0 at the current iteration.
-        last_index: int = len(bit_array) - 1  # The index of the last element in `bit_array`.
-        partition: int = 0                    # Used to store the lower and upper partition in each iteration.
-        potential_value: int = last_index     # The max subarray that "might" exist in the current iteration.
+    def longestSubarray(self, nums: list[int]) -> int:
+        """
+        Sliding Window Approach
+        -----------------------
+        Use a sliding window to inch through the nums
+        maintaining that there is never more than 1 zero within
+        the window. Keep track of whether we have a zero within
+        the window, if we encounter another, then we make sure to
+        close the window in to maintain one zero only. We return
+        the difference in the right end of the window and the left
+        which cuts off one element, that is, it assumes a deletion.
 
-        # Begin iterations to determine `result`.
-        right_index += 1
-        while right_index < len(bit_array) and bit_array[right_index] != 0: right_index += 1
-        partition += right_index - left_index - 2 if left_index == -1 and right_index >= len(bit_array) else right_index - left_index - 1
-        if partition > result: result = partition
+        Steps
+        -----
+        (Simple Case)
+        1. If nums is size one, then return 0, since we must delete an element.
 
-        while result < potential_value:
-            # (2) Calculate `lower_partition` and update `left_index`.
-            partition = right_index - left_index - 1 if right_index != -1 else 0
-            left_index = right_index
-            potential_value = partition + (last_index - right_index)
+        (Initialization)
+        2. Initialize variables for the left and right of the window
+           at position 0. While, make a zero count variable, if the right
+           end (at position 0) is on a zero we count that there is a zero
+           in our window. Lastly, initialize a max ones count variable to the
+           value of the first element.
 
-            # (3) Move `right_index` to the next right-ward 0.
-            right_index += 1
-            while right_index < len(bit_array) and bit_array[right_index] != 0: right_index += 1
 
-            # (4) Calcuate `upper_partition`.
-            partition += right_index - left_index - 1
+        (Iterate)
+        3. Expand the right end of the window right: If the right end encouters a zero,
+           then check if the we already have a zero in the window. If there is already a
+           zero in the window, then move the left end right until we cut off the left-most
+           zero in the widnow. If there was not already a zero in the window, then make
+           the zero condition True and compute the max 1's. Otherwise, compute the max 1's.
 
-            # (5) Check if `result` needs to be updated.
-            if partition > result: result = partition
+        (Stop)
+        4. Repeat the iteration of step (3) until the right end reaches the end of the array.
+           Then return the max 1's.
+        """
+        if len(nums) == 1:
+            return 0
 
-        return result
+        left = 0
+        zero_cond = nums[0] == 0  # zero in window?
+        max_ones = nums[0]
+
+        for right in range(1, len(nums)):
+            if nums[right] == 0:
+                if zero_cond == True:
+                    while nums[left] != 0:
+                        left += 1
+                    left += 1
+                else:
+                    max_ones = max(max_ones, right - left)
+                    zero_cond = True
+            else:
+                max_ones = max(max_ones, right - left)
+        return max_ones

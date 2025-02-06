@@ -44,7 +44,7 @@ class Solution {
                 nums[i + j] = nums2[j++];
         }
 
-        double median = nums[upBound / 2];
+        double median = nums[upBound / 2]; // Assuming odd
         if (upBound % 2 == 0)
             median = (nums[upBound / 2 - 1] + median) / 2;
 
